@@ -43,14 +43,26 @@
                 <td class="px-6 py-4">
                 {{weight.weight_round}}
                 </td>
-                <td class="px-6 py-4">
+                <td v-if="!editable" class="px-6 py-4">
                 {{weight.total_weight}} kgs
                 </td>
+                <td v-if="editable">
+                  <div class="mb-3 pt-0">
+  <input type="text" v-model="new_weight" placeholder="kgs" class="px-2 py-1 placeholder-slate-300 text-slate-600 relative bg-white bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full"/>
+</div>
+                </td>
                 <td class="px-6 py-4">
-              <button class="bg-sky-600 hover:bg-sky-600 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center">
+              <button v-if="!editable" @click="editWeight()" class="bg-sky-600 hover:bg-sky-600 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                 <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
                 </svg>
+                <span></span>
+                </button>
+                <button v-if="editable" @click="updateWeight(weight.id)" 
+                class="bg-emerald-600 hover:bg-emerald-600 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+</svg>
                 <span></span>
                 </button>
                 </td>
@@ -66,8 +78,10 @@ import axios from 'axios'
 export default {
   data(){
         return{
+            editable:false,
             name:"",
-            weights:[]
+            weights:[],
+            new_weight:""
         }
     },
     computed: {
@@ -86,7 +100,21 @@ export default {
                 console.log(err)
             })
         },
+        editWeight(){
+      this.editable = true;
     },
+    updateWeight(id){
+     
+      axios.patch(`http://localhost:8000/weights/${id}/`, {"total_weight":this.new_weight}).then(res=>{
+        
+        this.getWeights()  
+        this.editable = false;
+            }).catch(err=>{
+                console.log(err)
+            })
+    }
+    },
+    
     mounted(){
         this.getWeights()
     }

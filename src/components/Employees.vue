@@ -58,7 +58,7 @@
                          {{employee.payroll_number}}
                         </td>
                         <td class="px-8 py-0">
-                        <i class="fas fa-pen text-green-600 pr-3"></i>  <i class="fas fa-trash text-red-600 pr-3"></i>
+                        <!-- <i class="fas fa-pen text-green-600 pr-3"></i> --> <i @click="deleteEmployee(employee.id)" class="fas fa-trash text-red-600 pr-3"></i> 
                         </td>
                         </tr>
                         </tbody>
@@ -88,6 +88,13 @@ export default {
             axios.get('http://localhost:8000/employees').then(res=>{
                 this.employees = res.data
                 console.log(this.employees)
+            }).catch(err=>{
+                console.log(err)
+            })
+        },
+        deleteEmployee(id){
+            axios.delete(`http://localhost:8000/employees/${id}/`).then(res=>{
+               this.getEmployees();
             }).catch(err=>{
                 console.log(err)
             })

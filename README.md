@@ -1,19 +1,22 @@
-# finlays_frontend
+FINLAYS FRONTEND
 
-## Project setup
-```
-npm install
-```
+## APP SCREENS
+![1](screenshots/1.PNG)
+![1](screenshots/2.PNG)
+![1](screenshots/3.PNG)
+![1](screenshots/4.PNG)
+## Getting started
+These instructions will get you a copy of the project up and running in your local machine for development and testing purposes.
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+## Prerequisites
+- [Git](https://git-scm.com/download/)
+- [Node Js](https://nodejs.org/en/download/)
+- [Vue CLI](https://cli.vuejs.org/guide/installation.html)
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### Setting up 
+- Create a working space in your local machine
+- Clone this [repository](https://github.com/nicksonlangat/finlays_frontend.git) `git clone https://github.com/nicksonlangat/finlays_frontend.git`
+- Navigate to the project directory
+- Install depedencies `npm install`
+- Run the local server `npm run serve`
+- Go to `localhost:8080` and view in mobile interface
