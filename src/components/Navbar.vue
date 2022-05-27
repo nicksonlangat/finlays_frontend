@@ -71,16 +71,16 @@
                     </li>
                     <li class="mr-6 my-2 md:my-0">
                         <a href="#"
-                        @click="setDivision()"
-                        :class="{ 'border-emerald-600': new_division}"
+                        @click="setLeave()"
+                        :class="{ 'border-emerald-600': new_leave}"
                          class="block py-1 md:py-3 pl-1 align-middle text-sky-600 no-underline hover:text-gray-900 border-b-2  hover:border-emerald-800">
                             <i class="fas fa-tasks fa-fw mr-3"></i><span class="pb-1 md:pb-0 text-sm">Leave Requests</span>
                         </a>
                     </li>
                     <li class="mr-6 my-2 md:my-0">
                         <a href="#"
-                        @click="setDivision()"
-                        :class="{ 'border-emerald-600': new_division}"
+                        @click="setPayroll()"
+                        :class="{ 'border-emerald-600': new_payroll}"
                          class="block py-1 md:py-3 pl-1 align-middle text-sky-600 no-underline hover:text-gray-900 border-b-2  hover:border-emerald-800">
                             <i class="fas fa-money-check fa-fw mr-3"></i><span class="pb-1 md:pb-0 text-sm">Payroll</span>
                         </a>
@@ -95,13 +95,15 @@
 
 <script>
 export default {
-     props: { is_home: Boolean, is_division:Boolean, is_employee:Boolean },
+     props: { is_home: Boolean, is_division:Boolean, is_employee:Boolean, is_leave:Boolean, is_payroll:Boolean },
      
 data(){
     return{
         new_home: this.is_home,
         new_employee: this.is_employee,
-        new_division: this.is_division
+        new_division: this.is_division,
+        new_leave: this.is_leave,
+        new_payroll: this.is_payroll
     }
 },
 methods:{
@@ -109,19 +111,41 @@ methods:{
         this.new_home = true
         this.new_employee = false
         this.new_division = false
+         this.new_leave = false
+       this.new_payroll = false
         this.$emit('tabHome')
     },
     setEmployee(){
        this.new_employee = true
        this.new_home = false
        this.new_division = false
+        this.new_leave = false
+       this.new_payroll = false
        this.$emit('tabEmployee')
     },
     setDivision(){
        this.new_division = true
        this.new_employee = false
        this.new_home = false
+        this.new_leave = false
+       this.new_payroll = false
        this.$emit('tabDivision')
+    },
+    setLeave(){
+       this.new_leave = true
+       this.new_payroll = false
+       this.new_division = false
+       this.new_employee = false
+       this.new_home = false
+       this.$emit('tabLeave')
+    },
+    setPayroll(){
+       this.new_leave = false
+       this.new_payroll = true
+       this.new_division = false
+       this.new_employee = false
+       this.new_home = false
+       this.$emit('tabPayroll')
     }
 },
 mounted(){

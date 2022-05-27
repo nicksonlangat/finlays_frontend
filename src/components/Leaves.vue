@@ -14,17 +14,21 @@
                 <thead class="text-xs text-gray-700 uppercase bg-sky-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                 
-                <th scope="col" class="px-6 py-3">
-                date
-                </th>
+               
                 <th scope="col" class="px-6 py-3">
                 employee
                 </th>
                 <th scope="col" class="px-6 py-3">
-                round
+                type
+                </th>
+                 <th scope="col" class="px-6 py-3">
+               from
                 </th>
                 <th scope="col" class="px-6 py-3">
-                total weight
+                to
+                </th>
+                <th scope="col" class="px-6 py-3">
+                status
                 </th>
                 <th scope="col" class="px-6 py-3">
                action
@@ -32,39 +36,36 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="weight in filteredWeights" :key="weight.id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <tr v-for="leave in filteredLeaves" :key="leave.id" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                 
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                {{weight.date}}
-                </th>
+               
                 <td class="px-6 py-4">
-                {{weight.employee}}
+                {{leave.employee}}
                 </td>
                 <td class="px-6 py-4">
-                {{weight.weight_round}}
-                </td>
-                <td v-if="!editable" class="px-6 py-4">
-                {{weight.total_weight}} kgs
-                </td>
-                <td v-if="editable">
-                  <div class="mb-3 pt-0">
-  <input type="text" v-model="new_weight" placeholder="kgs" class="px-2 py-1 placeholder-slate-300 text-slate-600 relative bg-white bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full"/>
-</div>
+                {{leave.type}}
                 </td>
                 <td class="px-6 py-4">
-              <button v-if="!editable" @click="editWeight()" class="bg-sky-600 hover:bg-sky-600 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
-                </svg>
-                <span></span>
-                </button>
-                <button v-if="editable" @click="updateWeight(weight.id)" 
-                class="bg-emerald-600 hover:bg-emerald-600 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                {{leave.start_date}} 
+                </td>
+                <td class="px-6 py-4">
+                    {{leave.end_date}}
+                </td>
+                <td class="px-6 py-4">
+               Pending
+                </td>
+                <td class="px-6 py-4">
+                 <div class="flex">
+                      <h2 class="text-green-600">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
   <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
 </svg>
-                <span></span>
-                </button>
+                      </h2> | <h2 class="text-red-600">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+</svg>
+                      </h2>
+                 </div>
                 </td>
                 </tr>
                 </tbody>
@@ -80,29 +81,27 @@ export default {
         return{
             editable:false,
             name:"",
-            weights:[],
-            new_weight:""
+            leaves:[],
+            new_leave:""
         }
     },
     computed: {
-    filteredWeights() {
-      return this.weights.filter((weight) => {
-        return weight.employee.toLowerCase().includes(this.name.toLowerCase());
+    filteredLeaves() {
+      return this.leaves.filter((leave) => {
+        return leave.employee.toLowerCase().includes(this.name.toLowerCase());
       });
     },
   },
     methods:{
-        getWeights(){
-            axios.get('http://localhost:8000/weights').then(res=>{
-                this.weights = res.data
-              
+        getLeaves(){
+            axios.get('http://localhost:8000/leaves').then(res=>{
+                this.leaves = res.data
+                console.log(this.weights)
             }).catch(err=>{
                 console.log(err)
             })
         },
-        editWeight(){
-      this.editable = true;
-    },
+        
     updateWeight(id){
      
       axios.patch(`http://localhost:8000/weights/${id}/`, {"total_weight":this.new_weight}).then(res=>{
@@ -116,7 +115,7 @@ export default {
     },
     
     mounted(){
-        this.getWeights()
+        this.getLeaves()
     }
 }
 </script>
