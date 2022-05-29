@@ -74,14 +74,15 @@
             </div>
 </template>
 <script>
-import axios from 'axios'
+import { HTTP } from '../http-common'
 export default {
   data(){
         return{
             editable:false,
             name:"",
             weights:[],
-            new_weight:""
+            new_weight:"",
+            token:null
         }
     },
     computed: {
@@ -93,7 +94,7 @@ export default {
   },
     methods:{
         getWeights(){
-            axios.get('http://localhost:8000/weights').then(res=>{
+            HTTP.get('weights').then(res=>{
                 this.weights = res.data
               
             }).catch(err=>{
@@ -105,7 +106,7 @@ export default {
     },
     updateWeight(id){
      
-      axios.patch(`http://localhost:8000/weights/${id}/`, {"total_weight":this.new_weight}).then(res=>{
+      HTTP.patch(`weights/${id}/`, {"total_weight":this.new_weight}).then(res=>{
         
         this.getWeights()  
         this.editable = false;
@@ -117,6 +118,7 @@ export default {
     
     mounted(){
         this.getWeights()
+        
     }
 }
 </script>

@@ -17,7 +17,7 @@
 
                     <div class="relative text-sm">
                         <button id="userButton" class="flex items-center focus:outline-none mr-3">
-                            <img class="w-8 h-8 rounded-full mr-4" src="../assets/user.svg" alt="Avatar of User"> <span class="hidden md:inline-block">Hi, Nick </span>
+                            <img class="w-8 h-8 rounded-full mr-4" src="../assets/user.svg" alt="Avatar of User"> <span class="hidden md:inline-block">Hi, {{user.first_name}} {{user.last_name}}</span>
                             <svg class="pl-2 h-2" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 129 129" xmlns:xlink="http://www.w3.org/1999/xlink" enable-background="new 0 0 129 129">
                                 <g>
                                     <path d="m121.3,34.6c-1.6-1.6-4.2-1.6-5.8,0l-51,51.1-51.1-51.1c-1.6-1.6-4.2-1.6-5.8,0-1.6,1.6-1.6,4.2 0,5.8l53.9,53.9c0.8,0.8 1.8,1.2 2.9,1.2 1,0 2.1-0.4 2.9-1.2l53.9-53.9c1.7-1.6 1.7-4.2 0.1-5.8z" />
@@ -27,11 +27,10 @@
                         <div id="userMenu" class="bg-white rounded shadow-md mt-2 absolute mt-12 top-0 right-0 min-w-full overflow-auto z-30 invisible">
                             <ul class="list-reset">
                                 <li><a href="#" class="px-4 py-2 block text-gray-900 hover:bg-gray-400 no-underline hover:no-underline">My account</a></li>
-                                <li><a href="#" class="px-4 py-2 block text-gray-900 hover:bg-gray-400 no-underline hover:no-underline">Notifications</a></li>
                                 <li>
                                     <hr class="border-t mx-2 border-gray-400">
                                 </li>
-                                <li><a href="#" class="px-4 py-2 block text-gray-900 hover:bg-gray-400 no-underline hover:no-underline">Logout</a></li>
+                                <li><a @click="logOut()" class="px-4 py-2 block text-gray-900 hover:bg-gray-400 no-underline hover:no-underline">Logout</a></li>
                             </ul>
                         </div>
                     </div>
@@ -94,6 +93,8 @@
 </template>
 
 <script>
+import { HTTP } from '@/http-common'
+
 export default {
      props: { is_home: Boolean, is_division:Boolean, is_employee:Boolean, is_leave:Boolean, is_payroll:Boolean },
      
@@ -103,10 +104,22 @@ data(){
         new_employee: this.is_employee,
         new_division: this.is_division,
         new_leave: this.is_leave,
-        new_payroll: this.is_payroll
+        new_payroll: this.is_payroll,
+        user:""
     }
 },
 methods:{
+    logOut(){
+        localStorage.removeItem('is_loggedIn')
+         this.$router.push('login')
+
+    },
+    async getCurrentUser(){
+       await HTTP.get('accounts/current/user').then(res=>{
+            this.user = res.data
+            console.log(this.user)
+        })
+    },
     setHome(){
         this.new_home = true
         this.new_employee = false
@@ -149,6 +162,7 @@ methods:{
     }
 },
 mounted(){
+   
     var userMenuDiv = document.getElementById("userMenu");
     var userMenu = document.getElementById("userButton");
 
@@ -197,6 +211,8 @@ mounted(){
         }
         return false;
     }
+     this.getCurrentUser()
   }
+  
 }
 </script>

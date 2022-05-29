@@ -4,7 +4,7 @@
         <br><br><br><br><br><br><br>
         <div class="w-full max-w-lg mx-auto overflow-hidden bg-white rounded-lg shadow-md dark:bg-gray-800">
         <div class="px-6 py-4">
-            <h2 class="text-3xl font-bold text-center text-pink-700 dark:text-white">Finlays Tea ERP</h2>
+            <h2 class="text-3xl font-bold text-center text-gray-700 dark:text-white">Finlays Tea ERP</h2>
 
             <h3 class="mt-1 text-xl font-medium text-center text-gray-600 dark:text-gray-200">Welcome Back</h3>
 
@@ -24,23 +24,23 @@
 
                     <button 
                     @click="login()"
-                    class="px-4 py-2 leading-5 text-white transition-colors duration-200 transform bg-gray-700
-                     rounded hover:bg-gray-600 focus:outline-none" type="button">
+                    class="px-4 py-2 leading-5 text-white transition-colors duration-200 transform bg-sky-600
+                     rounded hover:bg-sky-600 focus:outline-none" type="button">
                      Login</button>
                 </div>
             </form>
         </div>
 
         <div class="flex items-center justify-center py-4 text-center bg-gray-50 dark:bg-gray-700">
-            <span class="text-sm text-gray-600 dark:text-gray-200">Don't have an account? </span>
+            <span class="text-sm text-gray-600 dark:text-gray-200">Manager but don't have an account? </span>
 
-            <a href="#" class="mx-2 text-sm font-bold text-blue-500 dark:text-blue-400 hover:underline">Register</a>
+            <a href="#" class="mx-2 text-sm font-bold text-blue-500 dark:text-blue-400 hover:underline">Contact admin</a>
         </div>
     </div>
     </div>
 </template>
 <script>
-import axios from 'axios'
+import { HTTP } from '@/http-common'
 export default {
     data(){
         return{
@@ -56,9 +56,10 @@ export default {
                 email:this.user.email,
                 password:this.user.password
             }
-            axios.post('http://localhost:8000/accounts/login/token/', data).then(res=>{
+            HTTP.post('accounts/login/token/', data).then(res=>{
                 localStorage.setItem('user_token', res.data.access)
                 localStorage.setItem('user_refresh', res.data.refresh)
+                localStorage.setItem('is_loggedIn', true);
                 this.$router.push('/')
             })
         }

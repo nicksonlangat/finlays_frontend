@@ -275,7 +275,7 @@ import Weights from '@/components/Weights.vue'
 import Divisions from '@/components/Divisions.vue'
 import Leaves from '@/components/Leaves.vue'
 import Payrolls from '@/components/Payrolls.vue'
-import axios from 'axios'
+import { HTTP } from '@/http-common'
 export default {
   components: {
     Navbar,
@@ -287,7 +287,7 @@ export default {
   },
   data(){
         return{
-            favorite_count: 0, 
+            token: null, 
             stats:[],
             is_home:false,
             is_division:false,
@@ -319,7 +319,10 @@ export default {
     },
     methods:{
         getStats(){
-            axios.get('http://localhost:8000/stats').then(res=>{
+             const config = {
+                    headers: { Authorization: `Token ${this.token}` }
+                };
+            HTTP.get('stats', config).then(res=>{
                 this.stats = res.data
             }).catch(err=>{
                 console.log(err)
@@ -368,8 +371,7 @@ export default {
                 phone_number:this.employee.phone_number,
                 division:this.employee.division
             }
-            console.log(data)
-            axios.post('http://localhost:8000/employees/', data).then(res=>{
+            HTTP.post('employees/', data).then(res=>{
             }).catch(err=>{
                 console.log(err)
             })
@@ -380,8 +382,7 @@ export default {
                 total_weight:this.weight.total_weight,
                 weight_round:this.weight.weight_round,
             }
-            console.log(data)
-            axios.post('http://localhost:8000/weights/', data).then(res=>{
+            HTTP.post('weights/', data).then(res=>{
             }).catch(err=>{
                 console.log(err)
             })
@@ -395,21 +396,21 @@ export default {
                 comments:this.leave.comments
             }
             console.log(data)
-            axios.post('http://localhost:8000/leaves/', data).then(res=>{
+            HTTP.post('leaves/', data).then(res=>{
                 console.log(res)
             }).catch(err=>{
                 console.log(err)
             })
         },
         getDivisions(){
-            axios.get('http://localhost:8000/divisions/').then(res=>{
+            HTTP.get('divisions/').then(res=>{
                 this.divisions = res.data
             }).catch(err=>{
                 console.log(err)
             })
         },
         getEmployees(){
-            axios.get('http://localhost:8000/employees').then(res=>{
+            HTTP.get('employees').then(res=>{
                 this.employees = res.data
                 console.log(this.employees)
             }).catch(err=>{

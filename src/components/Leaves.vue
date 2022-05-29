@@ -75,7 +75,7 @@
             </div>
 </template>
 <script>
-import axios from 'axios'
+import { HTTP } from '@/http-common';
 export default {
   data(){
         return{
@@ -94,7 +94,7 @@ export default {
   },
     methods:{
         getLeaves(){
-            axios.get('http://localhost:8000/leaves').then(res=>{
+            HTTP.get('leaves').then(res=>{
                 this.leaves = res.data
                 console.log(this.weights)
             }).catch(err=>{
@@ -104,7 +104,7 @@ export default {
         
     updateWeight(id){
      
-      axios.patch(`http://localhost:8000/weights/${id}/`, {"total_weight":this.new_weight}).then(res=>{
+      HTTP.patch(`weights/${id}/`, {"total_weight":this.new_weight}).then(res=>{
         
         this.getWeights()  
         this.editable = false;

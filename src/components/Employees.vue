@@ -68,7 +68,7 @@
                 </div>
 </template>
 <script>
-import axios from 'axios'
+import { HTTP } from '@/http-common';
 export default {
   data(){
         return{
@@ -85,7 +85,7 @@ export default {
   },
     methods:{
         getEmployees(){
-            axios.get('http://localhost:8000/employees').then(res=>{
+            HTTP.get('employees').then(res=>{
                 this.employees = res.data
                 console.log(this.employees)
             }).catch(err=>{
@@ -93,7 +93,7 @@ export default {
             })
         },
         deleteEmployee(id){
-            axios.delete(`http://localhost:8000/employees/${id}/`).then(res=>{
+            HTTP.delete(`employees/${id}/`).then(res=>{
                this.getEmployees();
             }).catch(err=>{
                 console.log(err)
